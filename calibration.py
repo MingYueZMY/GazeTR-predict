@@ -49,8 +49,11 @@ predictions = []
 predictions_hooked = []
 for i, batch in enumerate(dataloader):
     inputs, _ = batch
-    outputs = model(inputs)
-    pred_hooked = list(model(inputs).cpu().detach().numpy())
+    
+    with torch.no_grad():
+      outputs = model(inputs)
+      pred_hooked = list(activation['out'].cpu().detach().numpy())
+      
     predictions.append(outputs)
     predictions_hooked.append(pred_hooked)
 predictions = torch.cat(predictions, dim=0)
